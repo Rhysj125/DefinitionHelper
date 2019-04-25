@@ -1,16 +1,18 @@
 import React, {Component} from 'react'
 import { BrowserRouter as Router, Link, Route, Redirect} from 'react-router-dom'
 import './App.css'
+import DefinitionHelperPage from './pages/DefinitionHelperPage'
 
 class App extends Component {
 
-const
-
   renderDevelopment() {
     return(
-      <header className="App-header">
-        
-      </header>
+      <Router>
+        <header className="App-header">
+          <Route path="/" exact={true} component={body} />
+          <Route path="/Lilli" exact={true} component={DefinitionHelperPage} />
+        </header>
+      </Router>
     )
   }
 
@@ -25,13 +27,14 @@ const
   }
 
   render() {
-
-    if(process.env.NODE_ENV == "development"){
-      return this.renderDevelopment()
-    }else{
-      return this.renderMaintenance()
-    }
+    return this.renderDevelopment();
   }
+}
+
+const body = () => {
+  return (
+    <div>This is the body</div>
+  )
 }
 
 export default App

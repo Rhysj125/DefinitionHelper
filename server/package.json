@@ -1,0 +1,24 @@
+{
+  "name": "DefinitionAPI",
+  "dependencies": {
+    "babel-core": "^6.26.3",
+    "babel-loader": "^8.0.5",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
+    "body-parser": "^1.18.3",
+    "express": "^4.16.4",
+    "mongoose": "^5.3.3",
+    "passport": "^0.4.0",
+    "socket-io": "^1.0.0",
+    "socket.io": "^2.1.1",
+    "webpack": "^4.29.4",
+    "webpack-node-externals": "^1.7.2"
+  },
+  "scripts": {
+    "dev": "cross-env NODE_ENV=development node dist/server.bundle.js",
+    "start": "node server.js",
+    "webdev": "webpack -w",
+    "test": "echo \"Error: No test specified\" && exit 1"
+  },
+  "version": "0.0.1"
+}

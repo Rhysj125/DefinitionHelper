@@ -23,11 +23,18 @@
   color: #61dafb;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+table{
+  border: silver solid;
+}
+
+td{
+  color: white !important;
+  font-size: 14px !important;
+
+}
+
+th{
+  color: white !important;
+  font-size: 18px !important;
+  text-align: center !important;
 }
