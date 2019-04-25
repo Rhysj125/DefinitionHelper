@@ -25,6 +25,7 @@ let dbURL = "mongodb://RhysJones:Scoobydoo2!@ds131753.mlab.com:31753/learning-no
 
 app.get('/courses', (req, res) => {
     Course.find({}, (err, courses) => {
+        console.log(courses)
         res.send(courses)
     })
 })
