@@ -4,6 +4,7 @@ const port = process.env.PORT || 5000;
 let io = require('socket.io')
 let mongoose = require('mongoose')
 let bodyParser = require('body-parser');
+var cors = require('cors')
 
 let Definition = mongoose.model('definition', {
     word: String,
@@ -18,6 +19,7 @@ let Course = mongoose.model('course', {
 app.use(express.static(__dirname));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}))
+app.use("*", cors())
 
 mongoose.Promise = Promise;
 

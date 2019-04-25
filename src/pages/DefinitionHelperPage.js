@@ -35,12 +35,13 @@ class DefinitionHelperPage extends Component{
     }
 
     getCourses = async () => {
-        const response = await fetch(`/Courses`, {
+        const response = await fetch(`http://46.101.47.14:5000/Courses`, {
             headers: {
-                'Content-Type' : 'application/json',
-                'Accept' : 'application/json'
+                'content-type' : 'application/json',
+                'accept' : 'application/json'
             }
         })
+        
         const body = await response.json()
 
         if (response.status !== 200){

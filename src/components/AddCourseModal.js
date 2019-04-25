@@ -38,7 +38,7 @@ class AddCourseModal extends Component{
     postCourse = async () =>{
         console.log(JSON.stringify(this.state.newCourse))
 
-        const response = await fetch('/course', {
+        const response = await fetch('http://46.101.47.14:5000/course', {
             method: 'POST',
             mode: 'cors',
             headers: {
