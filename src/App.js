@@ -1,17 +1,37 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, {Component} from 'react'
+import { BrowserRouter as Router, Link, Route, Redirect} from 'react-router-dom'
+import './App.css'
 
-function App() {
-  return (
-    <div className="App">
+class App extends Component {
+
+const
+
+  renderDevelopment() {
+    return(
+      <header className="App-header">
+        
+      </header>
+    )
+  }
+
+  renderMaintenance() {
+    return(
       <header className="App-header">
         Undefined Games
         <br/>
-        Currently Undefinied
+        Currently Undefined
       </header>
-    </div>
-  );
+    )
+  }
+
+  render() {
+
+    if(process.env.NODE_ENV == "development"){
+      return this.renderDevelopment()
+    }else{
+      return this.renderMaintenance()
+    }
+  }
 }
 
-export default App;
+export default App
