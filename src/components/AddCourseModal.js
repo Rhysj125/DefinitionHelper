@@ -26,7 +26,9 @@ class AddCourseModal extends Component{
             valid: true,
             newCourse: {
                 courseName: ""
-            }
+            },
+            URL: 'http://46.101.47.14:5000'
+            //URL: 'http://localhost:5000'
         }
 
         this.closeModal = this.closeModal.bind(this)
@@ -38,19 +40,20 @@ class AddCourseModal extends Component{
     postCourse = async () =>{
         console.log(JSON.stringify(this.state.newCourse))
 
-        const response = await fetch('http://46.101.47.14:5000/course', {
+        const response = await fetch(this.state.URL + '/course', {
             method: 'POST',
-            mode: 'cors',
             headers: {
                 'ContentType' : 'application/json',
                 'content-type' : 'application/json'
             },
             body: JSON.stringify(this.state.newCourse),
-        }).then(res => {
-            console.log(res)
-        }).catch(err => console.log(err))
+        })
 
-        console.log(response)
+        const body = await response.json()
+
+        console.log(body)
+
+        this.props.onAdd(body)
     }
 
 

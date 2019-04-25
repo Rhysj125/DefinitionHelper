@@ -27,21 +27,18 @@ let dbURL = "mongodb://RhysJones:Scoobydoo2!@ds131753.mlab.com:31753/learning-no
 
 app.get('/courses', async (req, res) => {
     Course.find({}, (err, courses) => {
-        console.log(courses)
         res.send(courses)
     })
 })
 
 app.post('/course', async (req, res) => {
-    console.log(req.body)
-    console.log(req.headers)
 
     try{
         let course = new Course(req.body)
         
-        let saved = await course.save()
-        
-        res.sendStatus(200)
+        let saved = await course.save().then(course => {
+            res.send(course)
+        })
     }
     catch(error)
     {
@@ -51,7 +48,6 @@ app.post('/course', async (req, res) => {
 
 app.delete('/course/:id', async (req, res) => {
     Course.findByIdAndDelete(req.params.id).then((course) => {
-        console.log(course)
         res.send(course)
     })
 })
@@ -63,9 +59,6 @@ app.get('/definitions', (req, res) => {
 })
 
 app.post('/definition', async (req, res) => {
-    console.log(req.body)
-    console.log(req.headers)
-
     try{
         let definition = new Definition(req.body)
         

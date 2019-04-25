@@ -29,6 +29,7 @@ class DefinitionHelperPage extends Component{
         this.renderAdding = this.renderAdding.bind(this)
         this.toggleAdding = this.toggleAdding.bind(this)
         this.deleteCourse = this.deleteCourse.bind(this)
+        this.addCourse = this.addCourse.bind(this)
     }
 
     componentDidMount(){
@@ -93,6 +94,12 @@ class DefinitionHelperPage extends Component{
         })
     }
 
+    addCourse(newCourse){
+        this.setState( prevState => ({
+            courses: [...prevState.courses, newCourse]
+        }))
+    }
+
     toggleAdding(){
         this.setState( prevState => ({
             adding: !prevState.adding
@@ -100,12 +107,10 @@ class DefinitionHelperPage extends Component{
     }
 
     renderAdding(){
-        return <AddCourseModal onChangeState={this.toggleAdding} />
+        return <AddCourseModal onChangeState={this.toggleAdding} onAdd={this.addCourse} />
     }
 
     render(){
-        console.log(this.state.courses)
-
         return (
             <div>
                 <Table>
