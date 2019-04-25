@@ -25,7 +25,7 @@ mongoose.Promise = Promise;
 
 let dbURL = "mongodb://RhysJones:Scoobydoo2!@ds131753.mlab.com:31753/learning-node"
 
-app.get('/courses', (req, res) => {
+app.get('/courses', async (req, res) => {
     Course.find({}, (err, courses) => {
         console.log(courses)
         res.send(courses)
@@ -47,6 +47,13 @@ app.post('/course', async (req, res) => {
     {
         res.sendStatus(500)
     }
+})
+
+app.delete('/course/:id', async (req, res) => {
+    Course.findByIdAndDelete(req.params.id).then((course) => {
+        console.log(course)
+        res.send(course)
+    })
 })
 
 app.get('/definitions', (req, res) => {

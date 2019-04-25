@@ -13,17 +13,22 @@ const buttons = {
 
 class DefinitionHelperPage extends Component{
 
+    
+
     constructor(props){
         super(props)
 
         this.state = {
             adding: false,
-            courses: []
+            courses: [],
+            URL: 'http://46.101.47.14:5000'
+            //URL: 'http://localhost:5000'
         }
 
         this.getCourses = this.getCourses.bind(this)
         this.renderAdding = this.renderAdding.bind(this)
         this.toggleAdding = this.toggleAdding.bind(this)
+        this.deleteCourse = this.deleteCourse.bind(this)
     }
 
     componentDidMount(){
@@ -35,7 +40,7 @@ class DefinitionHelperPage extends Component{
     }
 
     getCourses = async () => {
-        const response = await fetch(`http://46.101.47.14:5000/Courses`, {
+        const response = await fetch(this.state.URL + `/Courses`, {
             headers: {
                 'content-type' : 'application/json',
                 'accept' : 'application/json'
@@ -49,6 +54,29 @@ class DefinitionHelperPage extends Component{
         }
 
         return body
+    }
+
+    async deleteCourse(event){
+        let value = event.currentTarget.value
+
+        const response = await fetch(this.state.URL + '/Course/' + value, {
+            method: 'DELETE',
+            headers: {
+                'content-type' : 'application/json',
+                'accept' : 'application/json'
+            }
+        })
+        
+        const body = await response.json()
+
+        console.log(body)
+
+        this.setState(prevState => ({
+            courses: prevState.courses.filter(currCourse => currCourse._id !== body._id)
+        }))
+
+        console.log(this.state.courses)
+
     }
 
     getEachCourseRow(){
@@ -96,7 +124,7 @@ class DefinitionHelperPage extends Component{
                                     {course.courseName}
                                 </TableCell>
                                 <TableCell>
-                                    <Button variant="contained" color="secondary" style={{margin:'5px'}}>Delete</Button>
+                                    <Button variant="contained" color="secondary" style={{margin:'5px'}} value={course._id} onClick={this.deleteCourse} >Delete</Button>
                                     <Button variant="contained" color="primary" style={{margin:'5px'}}>Practice</Button>
                                 </TableCell>
                             </TableRow>
