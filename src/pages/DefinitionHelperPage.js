@@ -35,7 +35,7 @@ class DefinitionHelperPage extends Component{
     }
 
     getCourses = async () => {
-        const response = await fetch(`/courses`)
+        const response = await fetch(`/Courses`)
         const body = await response.json()
 
         if (response.status !== 200){
