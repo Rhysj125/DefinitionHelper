@@ -35,7 +35,12 @@ class DefinitionHelperPage extends Component{
     }
 
     getCourses = async () => {
-        const response = await fetch(`/Courses`)
+        const response = await fetch(`/Courses`, {
+            headers: {
+                'Content-Type' : 'application/json',
+                'Accept' : 'application/json'
+            }
+        })
         const body = await response.json()
 
         if (response.status !== 200){
