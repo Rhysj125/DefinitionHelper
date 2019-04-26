@@ -11,6 +11,7 @@ class App extends Component {
         <header className="App-header">
           <Route path="/" exact={true} component={body} />
           <Route path="/Lilli" exact={true} component={DefinitionHelperPage} />
+          <Route path="/definitions/:id" />
         </header>
       </Router>
     )
