@@ -1,10 +1,5 @@
 import React, {Component} from 'react'
-import { Button } from '@material-ui/core'
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
+import {Button, Table, TableBody, TableCell, TableHead, TableRow} from '@material-ui/core';
 import AddCourseModal from '../components/AddCourseModal'
 import PracticeCourseModal from '../components/PracticeCourseModal'
 import { regExpLiteral } from '@babel/types';
@@ -16,6 +11,7 @@ const buttons = {
 class DefinitionHelperPage extends Component{
 
     //#region init
+
     constructor(props){
         super(props)
 
@@ -46,38 +42,37 @@ class DefinitionHelperPage extends Component{
             })
         })
     }
+
     //#endregion
 
     //#region API calls
     getCourses = async () => {
-        const response = await fetch(this.state.URL + `/Courses`, {
+        return fetch(this.state.URL + `/Courses`, {
             headers: {
                 'content-type' : 'application/json',
                 'accept' : 'application/json'
             }
+        }).then(response => {
+            return response.json()
         })
-        
-        const body = await response.json()
-
-        return body
     }
 
     async deleteCourse(event){
         let value = event.currentTarget.value
 
-        const response = await fetch(this.state.URL + '/Course/' + value, {
+        await fetch(this.state.URL + '/Course/' + value, {
             method: 'DELETE',
             headers: {
                 'content-type' : 'application/json',
                 'accept' : 'application/json'
             }
+        }).then(response => {
+            return response.json()
+        }).then(body => {
+            this.setState(prevState => ({
+                courses: prevState.courses.filter(currCourse => currCourse._id !== body._id)
+            }))
         })
-        
-        const body = await response.json()
-
-        this.setState(prevState => ({
-            courses: prevState.courses.filter(currCourse => currCourse._id !== body._id)
-        }))
     }
 
     //#endregion
@@ -106,6 +101,8 @@ class DefinitionHelperPage extends Component{
 
     //#endregion
 
+    //#region Actions
+
     addCourse(newCourse){
         this.setState( prevState => ({
             courses: [...prevState.courses, newCourse]
@@ -120,6 +117,8 @@ class DefinitionHelperPage extends Component{
         return course
     }
 
+    //#endregion
+
     //#region render Methods
     renderAdding(){
         return <AddCourseModal onChangeState={this.toggleAdding} onAdd={this.addCourse} />
@@ -127,7 +126,6 @@ class DefinitionHelperPage extends Component{
 
     renderPractice(){
         let course = this.getCourseFromState(this.state.practiceCourse)
-
 
         return <PracticeCourseModal onChangeState={this.togglePractice} course={course} />
     }

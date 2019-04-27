@@ -30,11 +30,18 @@ table{
 td{
   color: white !important;
   font-size: 14px !important;
+}
 
+td input{
+  color: white !important;
 }
 
 th{
   color: white !important;
   font-size: 18px !important;
   text-align: center !important;
+}
+
+th *{
+  color: white !important
 }

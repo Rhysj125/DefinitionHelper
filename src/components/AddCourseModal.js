@@ -63,7 +63,7 @@ class AddCourseModal extends Component{
     handleChange = name => event =>{
         this.setState({
             newCourse: {
-                courseName: event.target.value
+                [name]: event.target.value
             }
         })
     }
@@ -91,7 +91,7 @@ class AddCourseModal extends Component{
                         New Course
                     </Typography>
                     <Typography variant="subheading" className="form">
-                        <TextField className={classes.textField} label="Course Name" defaultValue={null} onChange={this.handleChange()} fullWidth />
+                        <TextField className={classes.textField} label="Course Name" defaultValue={null} onChange={this.handleChange('courseName')} fullWidth />
                     </Typography>
 
                     <Button variant="contained" color="primary" id="save" onClick={this.save}>Save</Button>

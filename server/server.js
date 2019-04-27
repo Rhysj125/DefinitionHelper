@@ -52,19 +52,23 @@ app.delete('/course/:id', async (req, res) => {
     })
 })
 
-app.get('/definitions', (req, res) => {
-    Definition.find({}, (err, definitions) => {
+app.get('/definitions/:id', async (req, res) => {
+    Definition.find({courseID: req.params.id}, (err, definitions) => {
         res.send(definitions)
     })
 })
 
 app.post('/definition', async (req, res) => {
-    try{
+    
+    try
+    {
         let definition = new Definition(req.body)
         
-        let saved = await definition.save()
-        
-        res.sendStatus(200)
+        console.log(definition)
+
+        let saved = await definition.save().then(definition => {
+            res.send(definition)
+        })
     }
     catch(error)
     {
