@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import DefinitionsTable from '../components/DefinitionTable'
 
-class DefinitionsPage extends Component{
+class CourseManagementPage extends Component{
 
     //#region init
 
@@ -18,4 +18,4 @@ class DefinitionsPage extends Component{
     //#endregion
 }
 
-export default DefinitionsPage
+export default CourseManagementPage

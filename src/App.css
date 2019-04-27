@@ -45,3 +45,25 @@ th{
 th *{
   color: white !important
 }
+
+.td-action{
+  text-align: center !important;
+  width: 148px;
+  padding: 0px !important;
+}
+
+.td-word{
+  min-width:168px;
+}
+
+.td-definition{
+  min-width:170px;
+}
+
+.table-definition{
+  max-height: 500px;
+  height: 500px;
+  width:700px;
+  overflow-y: auto;
+  border: silver 1px solid;
+}

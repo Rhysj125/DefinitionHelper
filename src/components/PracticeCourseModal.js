@@ -26,9 +26,7 @@ class PracticeCourseModal extends Component{
             open: true,
             valid: true,
             redirect: false,
-            redirectTo: null,
-            //URL: 'http://46.101.47.14:5000'
-            URL: 'http://localhost:5000'
+            redirectTo: null
         }
 
         this.closeModal = this.closeModal.bind(this)

@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import { BrowserRouter as Router, Link, Route, Redirect} from 'react-router-dom'
 import './App.css'
 import DefinitionHelperPage from './pages/DefinitionHelperPage'
-import DefinitionsPage from './pages/DefinitionsPage'
+import CourseManagementPage from './pages/CourseManagementPage'
 import WordsPage from './pages/WordsPage'
 
 class App extends Component {
@@ -13,8 +13,9 @@ class App extends Component {
         <header className="App-header">
           <Route path="/" exact={true} component={body} />
           <Route path="/Lilli" exact={true} component={DefinitionHelperPage} />
-          <Route path="/definitions" component={DefinitionsPage} />
+          <Route path="/courseManagement" component={CourseManagementPage} />
           <Route path="/words" component={WordsPage} />
+          <Route path="/definitions" component={WordsPage} />
         </header>
       </Router>
     )

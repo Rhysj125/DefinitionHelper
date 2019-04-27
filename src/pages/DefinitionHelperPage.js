@@ -1,12 +1,10 @@
 import React, {Component} from 'react'
 import {Button, Table, TableBody, TableCell, TableHead, TableRow} from '@material-ui/core';
 import AddCourseModal from '../components/AddCourseModal'
-import PracticeCourseModal from '../components/PracticeCourseModal'
-import { regExpLiteral } from '@babel/types';
-
-const buttons = {
-    margin:'5px'
-}
+import {Redirect} from 'react-router-dom'
+import DeleteIcon from '@material-ui/icons/Delete';
+import MenuIcon from '@material-ui/icons/Menu';
+import AddIcon from '@material-ui/icons/Add';
 
 class DefinitionHelperPage extends Component{
 
@@ -17,22 +15,20 @@ class DefinitionHelperPage extends Component{
 
         this.state = {
             adding: false,
-            practice: false,
-            practiceCourse: 'initial',
+            redirect: false,
             courses: [],
+            redirectTo: null,
             URL: 'http://46.101.47.14:5000'
             //URL: 'http://localhost:5000'
         }
 
         this.getCourses = this.getCourses.bind(this)
         this.renderAdding = this.renderAdding.bind(this)
-        this.renderPractice = this.renderPractice.bind(this)
         this.toggleAdding = this.toggleAdding.bind(this)
-        this.togglePractice = this.togglePractice.bind(this)
-        this.onPracticeClick = this.onPracticeClick.bind(this)
         this.deleteCourse = this.deleteCourse.bind(this)
         this.addCourse = this.addCourse.bind(this)
         this.getCourseFromState = this.getCourseFromState.bind(this)
+        this.redirectOnClick = this.redirectOnClick.bind(this)
     }
 
     componentDidMount(){
@@ -78,20 +74,6 @@ class DefinitionHelperPage extends Component{
     //#endregion
 
     //#region Toggles
-    onPracticeClick(event){
-        let value = event.currentTarget.value
-
-        this.setState(prevState => ({
-            practiceCourse: value,
-            practice: !prevState.practice
-        }))
-    }
-
-    togglePractice() {
-        this.setState(prevState => ({
-            practice: !prevState.practice,
-        }))
-    }
 
     toggleAdding(){
         this.setState( prevState => ({
@@ -117,6 +99,15 @@ class DefinitionHelperPage extends Component{
         return course
     }
 
+    redirectOnClick(event){
+        let value = event.currentTarget.value
+
+        this.setState(prevState => ({
+            redirect: !prevState.redirect,
+            redirectTo: '/courseManagement?id=' + value,
+        }))
+    }
+
     //#endregion
 
     //#region render Methods
@@ -124,10 +115,8 @@ class DefinitionHelperPage extends Component{
         return <AddCourseModal onChangeState={this.toggleAdding} onAdd={this.addCourse} />
     }
 
-    renderPractice(){
-        let course = this.getCourseFromState(this.state.practiceCourse)
-
-        return <PracticeCourseModal onChangeState={this.togglePractice} course={course} />
+    renderRedirect(){
+        return <Redirect to={this.state.redirectTo} />
     }
 
     render(){
@@ -149,8 +138,12 @@ class DefinitionHelperPage extends Component{
                                     {course.courseName}
                                 </TableCell>
                                 <TableCell>
-                                    <Button variant="contained" color="secondary" style={{margin:'5px'}} value={course._id} onClick={this.deleteCourse} >Delete</Button>
-                                    <Button variant="contained" color="primary" style={{margin:'5px'}} value={course._id} onClick={this.onPracticeClick}>Practice</Button>
+                                    <Button variant="contained" color="primary" style={{margin:'5px'}} value={course._id} onClick={this.redirectOnClick}>
+                                        <MenuIcon />
+                                    </Button>
+                                    <Button variant="contained" color="secondary" style={{margin:'5px'}} value={course._id} onClick={this.deleteCourse}>
+                                        <DeleteIcon />
+                                    </Button>
                                 </TableCell>
                             </TableRow>
                             )
@@ -158,10 +151,12 @@ class DefinitionHelperPage extends Component{
                     }
                     </TableBody>
                 </Table>
-                <Button variant="contained" style={buttons} onClick={this.toggleAdding}>Create New Course</Button>
+                <Button variant="contained" style={{background:'green', margin:'5px'}} onClick={this.toggleAdding}>
+                    <AddIcon/>
+                </Button>
 
                 {this.state.adding ? this.renderAdding() : null}
-                {this.state.practice ? this.renderPractice() : null}
+                {this.state.redirect ? this.renderRedirect() : null}
             </div>
         )
     }

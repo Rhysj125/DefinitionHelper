@@ -1,6 +1,12 @@
 import React, {Component} from 'react'
 import {Button, Table, TableBody, TableCell, TableHead, TableRow, TextField} from '@material-ui/core';
 import {Redirect} from 'react-router-dom'
+import DeleteIcon from '@material-ui/icons/Delete';
+import EditIcon from '@material-ui/icons/Edit';
+import AddIcon from '@material-ui/icons/Add';
+import BackIcon from '@material-ui/icons/ArrowBack';
+import SaveIcon from '@material-ui/icons/Save'
+import CancelIcon from '@material-ui/icons/Cancel'
 
 class DefinitionTable extends Component{
 
@@ -17,15 +23,17 @@ class DefinitionTable extends Component{
             word: null,
             definition: null,
             courseID: null,
-            URL: 'http://46.101.47.14:5000'
-            //URL: 'http://localhost:5000'
+            //URL: 'http://46.101.47.14:5000'
+            URL: 'http://localhost:5000'
         }
 
         this.getDefinitions = this.getDefinitions.bind(this)
+        this.deleteDefinition = this.deleteDefinition.bind(this)
         this.toggleAdding = this.toggleAdding.bind(this)
         this.toggleRedirect = this.toggleRedirect.bind(this)
         this.handleTextChange = this.handleTextChange.bind(this)
         this.save = this.save.bind(this)
+        this.deleteClick = this.deleteClick.bind(this)
     }
 
     componentDidMount(){
@@ -93,7 +101,20 @@ class DefinitionTable extends Component{
     }
 
     deleteDefinition = async (id) => {
-        
+        fetch(`${this.state.URL}/definition/${id}`, {
+            method: 'DELETE',
+            headers: {
+                'content-type' : 'application/json'
+            }
+        }).then(response => {
+            return response.json()
+        }).then(definition => {
+            console.log(definition)
+
+            this.setState(prevState => ({
+                definitions: prevState.definitions.filter(curDefinition => curDefinition._id !== definition._id)
+            }))
+        })
     }
     
     //#endregion
@@ -118,6 +139,12 @@ class DefinitionTable extends Component{
         this.postDefinition(definition)
     }
 
+    deleteClick(event){
+        const id = event.currentTarget.value
+
+        this.deleteDefinition(id)
+    }
+
     //#endregion
 
     //#region Render Methods
@@ -131,9 +158,9 @@ class DefinitionTable extends Component{
                 <TableCell>
                     <TextField placeholder='Definition' onChange={this.handleTextChange('definition')} />
                 </TableCell>
-                <TableCell>
-                    <Button variant='contained' color='primary' style={{margin:'5px'}} onClick={this.save}>Save</Button>
-                    <Button variant='contained' color='secondary' style={{margin:'5px'}} onClick={this.toggleAdding}>Cancel</Button>
+                <TableCell className='td-action'>
+                    <Button variant='contained' color='primary' style={{margin:'5px'}} onClick={this.save}><SaveIcon /></Button>
+                    <Button variant='contained' color='secondary' style={{margin:'5px'}} onClick={this.toggleAdding}><CancelIcon /></Button>
                 </TableCell>
             </TableRow>
         )
@@ -146,28 +173,36 @@ class DefinitionTable extends Component{
     render(){
         return (
             <div>
-                <Table>
+                <Button variant='contained' style={{margin: '5px', float:'right'}}>
+                    practice
+                </Button>
+
+                <Table >
                     <TableHead>
                         <TableRow>
                             <TableCell>Word</TableCell>
                             <TableCell>Definition</TableCell>
-                            <TableCell>Action</TableCell>
+                            <TableCell className='td-action'>Action</TableCell>
                         </TableRow>
                     </TableHead>
+                </Table>
+                <div className='table-definition'>
+                <Table >
                     <TableBody>
                         {
                             this.state.definitions.map((definition) => {                        
                                 return (
                                     <TableRow>
-                                        <TableCell>
+                                        <TableCell className='td-word'>
                                             {definition.word}
                                         </TableCell>
-                                        <TableCell>
+                                        <TableCell className='td-definition'>
                                             {definition.definition}
                                         </TableCell>
-                                        <TableCell>
-                                            <Button variant="contained" color="secondary" style={{margin:'5px'}} value={definition._id} onClick={this.deleteCourse} >Delete</Button>
-                                            <Button variant="contained" color="primary" style={{margin:'5px'}} value={definition._id} onClick={this.onPracticeClick}>Practice</Button>
+                                        <TableCell className='td-action'>
+                                            <Button variant="contained" color="secondary" style={{margin:'5px'}} value={definition._id} onClick={this.deleteClick}>
+                                                <DeleteIcon/>
+                                            </Button>
                                         </TableCell>
                                     </TableRow>
                                     )
@@ -176,9 +211,14 @@ class DefinitionTable extends Component{
                         {this.state.adding ? this.renderAdding() : null}
                     </TableBody>
                 </Table>
-                <Button variant='contained' value='Lilli' style={{margin:'5px'}} onClick={this.toggleRedirect}>Go Back</Button>
-                <Button variant='contained' style={{margin:'5px'}} onClick={this.toggleAdding}>Add New</Button>
+                </div>
 
+                <Button variant='contained' color='default' value='Lilli' style={{margin:'5px'}} onClick={this.toggleRedirect}>
+                    <BackIcon />
+                </Button>
+                <Button variant='contained' style={{margin:'5px', background:'Green'}} onClick={this.toggleAdding}>
+                    <AddIcon />
+                </Button>
                 {this.state.redirect ? this.renderRedirect() : null}
             </div>
         )

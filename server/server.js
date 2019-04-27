@@ -76,6 +76,16 @@ app.post('/definition', async (req, res) => {
     }
 })
 
+app.delete('/definition/:id', async (req, res) => {
+    Definition.findByIdAndDelete(req.params.id, (err, definition) => {
+        if(err){
+            res.send(err)
+        }else{
+            res.send(definition)
+        }
+    })
+})
+
 app.listen(port, () => console.log(`Listening on port: ${port}`))
 
 mongoose.connect(dbURL, {useNewUrlParser: true }, (err) =>{

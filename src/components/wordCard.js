@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 
-class wordCard extends Component{
+class WordCard extends Component{
 
     render(){
         return(null)
@@ -8,4 +8,4 @@ class wordCard extends Component{
 
 }
 
-export default wordCard
+export default WordCard
