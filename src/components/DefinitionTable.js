@@ -17,8 +17,8 @@ class DefinitionTable extends Component{
             word: null,
             definition: null,
             courseID: null,
-            //URL: 'http://46.101.47.14:5000'
-            URL: 'http://localhost:5000'
+            URL: 'http://46.101.47.14:5000'
+            //URL: 'http://localhost:5000'
         }
 
         this.getDefinitions = this.getDefinitions.bind(this)

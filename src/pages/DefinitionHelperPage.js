@@ -20,8 +20,8 @@ class DefinitionHelperPage extends Component{
             practice: false,
             practiceCourse: 'initial',
             courses: [],
-            //URL: 'http://46.101.47.14:5000'
-            URL: 'http://localhost:5000'
+            URL: 'http://46.101.47.14:5000'
+            //URL: 'http://localhost:5000'
         }
 
         this.getCourses = this.getCourses.bind(this)

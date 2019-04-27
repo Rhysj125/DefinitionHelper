@@ -27,8 +27,8 @@ class AddCourseModal extends Component{
             newCourse: {
                 courseName: ""
             },
-            //URL: 'http://46.101.47.14:5000'
-            URL: 'http://localhost:5000'
+            URL: 'http://46.101.47.14:5000'
+            //URL: 'http://localhost:5000'
         }
 
         this.closeModal = this.closeModal.bind(this)
