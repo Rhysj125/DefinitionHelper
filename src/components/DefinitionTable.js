@@ -3,7 +3,6 @@ import {Button, Table, TableBody, TableCell, TableHead, TableRow, TextField} fro
 import {Redirect} from 'react-router-dom'
 import PracticeCourseModal from './PracticeCourseModal'
 import DeleteIcon from '@material-ui/icons/Delete';
-import EditIcon from '@material-ui/icons/Edit';
 import AddIcon from '@material-ui/icons/Add';
 import BackIcon from '@material-ui/icons/ArrowBack';
 import SaveIcon from '@material-ui/icons/Save'

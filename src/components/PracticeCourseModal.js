@@ -52,7 +52,9 @@ class PracticeCourseModal extends Component{
     }
 
     renderRedirect(){
-        return <Redirect to={`/practice?id=${this.props.course._id}&mode='${this.state.mode}'`} />
+        console.log(this.state.mode)
+
+        return <Redirect to={`/practice?id=${this.props.id}&mode='${this.state.mode}'`} />
         //return null
     }
 
