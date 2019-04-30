@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import {Button, Table, TableBody, TableCell, TableHead, TableRow, TextField} from '@material-ui/core';
 import {Redirect} from 'react-router-dom'
+import PracticeCourseModal from './PracticeCourseModal'
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import AddIcon from '@material-ui/icons/Add';
@@ -23,6 +24,7 @@ class DefinitionTable extends Component{
             word: null,
             definition: null,
             courseID: null,
+            practice: false,
             URL: 'http://46.101.47.14:5000'
             //URL: 'http://localhost:5000'
         }
@@ -31,21 +33,22 @@ class DefinitionTable extends Component{
         this.deleteDefinition = this.deleteDefinition.bind(this)
         this.toggleAdding = this.toggleAdding.bind(this)
         this.toggleRedirect = this.toggleRedirect.bind(this)
+        this.togglePractice = this.togglePractice.bind(this)
         this.handleTextChange = this.handleTextChange.bind(this)
         this.save = this.save.bind(this)
         this.deleteClick = this.deleteClick.bind(this)
+        this.renderPractice = this.renderPractice.bind(this)
     }
 
     componentDidMount(){
         const params = new URLSearchParams(this.props.location.search)
 
-        this.getDefinitions(params.get('id')).then(dbCourses => {
+        this.getDefinitions(params.get('id')).then(dbDefinitions => {
             this.setState({
-                definitions: dbCourses,
+                definitions: dbDefinitions,
                 courseID: params.get('id')
             })
         })
-
     }
 
     //#endregion
@@ -64,6 +67,12 @@ class DefinitionTable extends Component{
         this.setState(prevState => ({
             redirect: !prevState.redirect,
             redirectTo: value
+        }))
+    }
+
+    togglePractice(){
+        this.setState(prevState => ({
+            practice: !prevState.practice
         }))
     }
 
@@ -170,10 +179,14 @@ class DefinitionTable extends Component{
         return <Redirect to={`/${this.state.redirectTo}`} />
     }
 
+    renderPractice(){
+        return <PracticeCourseModal id={this.state.courseID} onChangeState={this.togglePractice} />
+    }
+
     render(){
         return (
             <div>
-                <Button variant='contained' style={{margin: '5px', float:'right'}}>
+                <Button variant='contained' style={{margin: '5px', float:'right'}} value='practice' onClick={this.togglePractice}>
                     practice
                 </Button>
 
@@ -220,6 +233,7 @@ class DefinitionTable extends Component{
                     <AddIcon />
                 </Button>
                 {this.state.redirect ? this.renderRedirect() : null}
+                {this.state.practice ? this.renderPractice() : null}
             </div>
         )
     }

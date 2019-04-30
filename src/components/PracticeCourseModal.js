@@ -26,7 +26,7 @@ class PracticeCourseModal extends Component{
             open: true,
             valid: true,
             redirect: false,
-            redirectTo: null
+            mode: null
         }
 
         this.closeModal = this.closeModal.bind(this)
@@ -47,12 +47,12 @@ class PracticeCourseModal extends Component{
 
         this.setState(prevState => ({
             redirect: !prevState.redirect,
-            redirectTo: value
+            mode: value
         }))
     }
 
     renderRedirect(){
-        return <Redirect to={`/${this.state.redirectTo}?id=${this.props.course._id}`} />
+        return <Redirect to={`/practice?id=${this.props.course._id}&mode='${this.state.mode}'`} />
         //return null
     }
 
@@ -63,7 +63,7 @@ class PracticeCourseModal extends Component{
             <Modal open={this.state.open} onBackdropClick={this.closeModal}>
                 <div style={ModalStyle} className={classes.paper}>
                     <Typography variant="title" className="title">
-                        Practice Course: {this.props.course.courseName}
+                        Practice Mode
                     </Typography>
                     <div>
                         <Button variant="contained" id="words" value="words" onClick={this.redirectOnClick} style={{margin:'5px'}}>Words</Button>
