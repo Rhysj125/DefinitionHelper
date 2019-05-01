@@ -1,4 +1,5 @@
 import React, {Component} from 'react'
+import Loading from '../components/utils/Loading'
 
 class PracticePage extends Component{
 
@@ -17,9 +18,16 @@ class PracticePage extends Component{
     }
 
     componentDidMount() {
-        const params = new URLSearchParams(this.props.location.search)
+
+        this.simulateWait()
+        /*const params = new URLSearchParams(this.props.location.search)
         
         const dbDefinitions = this.getDefinitions(params.get('id')).then(dbDefinitions => {
+
+            this.setState({
+                loading: true
+            })
+
             return dbDefinitions.map((definition) => {
                 return {
                     ...definition,
@@ -32,9 +40,10 @@ class PracticePage extends Component{
             this.setState({
                 definitions: results,
                 courseID: params.get('id'),
-                practiceMode: params.get('mode')
+                practiceMode: params.get('mode'),
+                loading: false
             })
-        })
+        })*/
     }
 
     //#endregion
@@ -70,7 +79,7 @@ class PracticePage extends Component{
     getRandomThreeAnswers(definitionID){
         let topThreeQuestions = [].concat(this.state.definitions)
             .filter(currentDefinition => 
-            currentDefinition._id !== definitionID)
+                currentDefinition._id !== definitionID)
             .map(questions => {
                 let rand = (Math.floor(Math.random() * (+1000)))
                 return {
@@ -88,37 +97,36 @@ class PracticePage extends Component{
         }
     }
 
-    /*getRandomThreeAnswersIndexes(){
-        let numberOfDefinitions = this.state.definitions.length
+    simulateWait = () =>{
+        this.setState({
+            loading: true
+        })
 
-        console.log('Number Of definitions: ' + numberOfDefinitions)
-
-        const indexesToGet = []
-
-
-        if(numberOfDefinitions > 0){
-            while(indexesToGet.length < 3)
-            {
-                let nextIndexToTry = (Math.floor(Math.random() * (+numberOfDefinitions)))
-
-                //(Math.floor(Math.random() * (+numberOfDefinitions +0)) + 0 )
-                if(indexesToGet.indexOf(nextIndexToTry) !== -1){
-                    console.log('Already Exists')
-                }else{
-                    indexesToGet.push(nextIndexToTry)
-                }
-            }
-        }
-    }*/
+        setTimeout(() => {
+            this.setState({
+                loading: false
+            })
+        }, 3000)
+    }
 
     //#endregion
 
     //#region Render Methods
 
-    render(){
-        this.getRandomThreeAnswers("5cc489e414bd663e68934582")
+    renderLoading(){
+        return <Loading />
+    }
 
-        return null
+    render(){
+        console.log(this.state)
+
+        return (
+            <div>
+                {this.state.loading ? this.renderLoading() : null}
+
+                Hello something behind me
+            </div>
+        )
     }
 
     //#endregion
