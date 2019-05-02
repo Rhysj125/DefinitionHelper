@@ -1,5 +1,7 @@
 import React, {Component} from 'react'
 import Loading from '../components/utils/Loading'
+import QuestionCard from '../components/QuestionCard'
+import AnswerCards from '../components/AnswerCards'
 
 class PracticePage extends Component{
 
@@ -19,8 +21,7 @@ class PracticePage extends Component{
 
     componentDidMount() {
 
-        this.simulateWait()
-        /*const params = new URLSearchParams(this.props.location.search)
+        const params = new URLSearchParams(this.props.location.search)
         
         const dbDefinitions = this.getDefinitions(params.get('id')).then(dbDefinitions => {
 
@@ -43,7 +44,7 @@ class PracticePage extends Component{
                 practiceMode: params.get('mode'),
                 loading: false
             })
-        })*/
+        })
     }
 
     //#endregion
@@ -68,45 +69,91 @@ class PracticePage extends Component{
 
     // Get a random question that has not yet been done this practice session
     getRandomQuestion(){
-        let unpracticedQuestions = this.state.definitions.filter(currentDefinition => currentDefinition.practiced !== false)
+        let unpracticedQuestions = this.state.definitions.filter(currentDefinition => currentDefinition.practiced !== true)
 
         let numberOfDefinitions = unpracticedQuestions.length - 1
 
         let questionIndex = (Math.floor(Math.random() * (+numberOfDefinitions)))
+
+        return unpracticedQuestions[questionIndex]
     }
 
     // Get three random answers that does not match current answer.
-    getRandomThreeAnswers(definitionID){
+    getRandomAnswers(question){
         let topThreeQuestions = [].concat(this.state.definitions)
             .filter(currentDefinition => 
-                currentDefinition._id !== definitionID)
+                currentDefinition._id !== question._id)
             .map(questions => {
-                let rand = (Math.floor(Math.random() * (+1000)))
                 return {
                     ...questions,
-                    order: rand
+                    order: (Math.floor(Math.random() * (+1000))),
+                    correctAnswer: false
                 }
             }).sort((a, b) => {
                 return a.order - b.order
             })
 
         if(topThreeQuestions.length > 3){
-            return topThreeQuestions.slice(0, 3)
+            return this.addCorrectAnswerAndSort(question, topThreeQuestions.slice(0, 3))
         }else{
-            return topThreeQuestions
+            return this.addCorrectAnswerAndSort(question, topThreeQuestions)
         }
     }
 
-    simulateWait = () =>{
-        this.setState({
-            loading: true
+    getCurrentQuestionNumber(){
+        return this.state.definitions.filter(currentDefinition => currentDefinition.practiced === true).length + 1
+    }
+
+    // Returns the correct property of the question object depending on
+    // which mode has been chosen by the user
+    getQuestionBasedOnMode(question){
+        if(this.state.practiceMode == 'word'){
+            return question.word
+        }else if(this.state.practiceMode == 'definition'){
+            return question.definition
+        }else{
+            return 'Something went Wrong'
+        }
+    }
+
+    // Returns the correct list of property of the answer object array depending on
+    // which mode has been chosen by the user
+    getAnswersBasedOnMode(answers){
+        console.log(answers)
+
+        if(this.state.practiceMode == 'word'){
+            return answers.map(currentAnswer => {
+                return  {
+                    answer : currentAnswer.definition,
+                    correct: currentAnswer.correctAnswer
+                }
+            })
+        }else if(this.state.practiceMode == 'definition'){
+            return answers.map(currentAnswer => {
+                return {
+                    answer : currentAnswer.word,
+                    correct: currentAnswer.correctAnswer
+                }
+            })
+        }else{
+            return []
+        }
+    }
+
+    getCorrectAnswer(){
+
+    }
+
+    addCorrectAnswerAndSort(question, answers){
+        answers.push({
+            ...question,
+            order: Math.floor(Math.random() * (+1000)),
+            correctAnswer: true
         })
 
-        setTimeout(() => {
-            this.setState({
-                loading: false
-            })
-        }, 3000)
+        return answers.sort((a, b) => {
+            return a.order - b.order
+        })
     }
 
     //#endregion
@@ -118,13 +165,20 @@ class PracticePage extends Component{
     }
 
     render(){
-        console.log(this.state)
+        let question = this.getRandomQuestion()
+
+        let answers = question ? this.getRandomAnswers(question) : null
+
+        console.log(answers)
 
         return (
             <div>
-                {this.state.loading ? this.renderLoading() : null}
+                <QuestionCard questionNumber={this.getCurrentQuestionNumber()} 
+                    totalQuestions={this.state.definitions.length} question={this.getQuestionBasedOnMode(question)} />
+                
+                <AnswerCards answers={answers ? this.getAnswersBasedOnMode(answers) : []} />
 
-                Hello something behind me
+                {this.state.loading ? this.renderLoading() : null}
             </div>
         )
     }
