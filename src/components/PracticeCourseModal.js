@@ -54,7 +54,7 @@ class PracticeCourseModal extends Component{
     renderRedirect(){
         console.log(this.state.mode)
 
-        return <Redirect to={`/practice?id=${this.props.id}&mode='${this.state.mode}'`} />
+        return <Redirect to={`/practice?id=${this.props.id}&mode=${this.state.mode}`} />
         //return null
     }
 
@@ -68,8 +68,8 @@ class PracticeCourseModal extends Component{
                         Practice Mode
                     </Typography>
                     <div>
-                        <Button variant="contained" id="words" value="words" onClick={this.redirectOnClick} style={{margin:'5px'}}>Words</Button>
-                        <Button variant="contained" id="definitions" value="definitions" onClick={this.redirectOnClick} style={{margin:'5px'}}>Definitions</Button>                    
+                        <Button variant="contained" id="word" value="word" onClick={this.redirectOnClick} style={{margin:'5px'}}>Words</Button>
+                        <Button variant="contained" id="definition" value="definition" onClick={this.redirectOnClick} style={{margin:'5px'}}>Definitions</Button>                    
                     </div>
                     {this.state.redirect ? this.renderRedirect() : null}
                 </div>
