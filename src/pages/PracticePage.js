@@ -13,7 +13,8 @@ class PracticePage extends Component{
         this.state = {
             definitions: [],
             courseID: null,
-            URL: 'http://localhost:5000'
+            //URL: 'http://localhost:5000'
+            URL: 'http://46.101.47.14:5000'
         }
 
         this.getDefinitions = this.getDefinitions.bind(this)
