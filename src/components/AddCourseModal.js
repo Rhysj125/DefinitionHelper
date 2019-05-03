@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import {Modal, Typography, TextField, Button} from '@material-ui/core'
 import { withStyles } from '@material-ui/core/styles';
 import ModalStyle from '../styles/modalStyle'
+import ConnectionString from '../data/Connection'
 
 const styles = theme => ({
     paper: {
@@ -26,9 +27,7 @@ class AddCourseModal extends Component{
             valid: true,
             newCourse: {
                 courseName: ""
-            },
-            URL: 'http://46.101.47.14:5000'
-            //URL: 'http://localhost:5000'
+            }
         }
 
         this.closeModal = this.closeModal.bind(this)
@@ -37,7 +36,7 @@ class AddCourseModal extends Component{
     }
 
     postCourse = async () =>{
-        const response = await fetch(this.state.URL + '/course', {
+        const response = await fetch(ConnectionString + '/course', {
             method: 'POST',
             headers: {
                 'content-type' : 'application/json'

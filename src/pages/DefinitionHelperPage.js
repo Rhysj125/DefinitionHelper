@@ -5,6 +5,7 @@ import {Redirect} from 'react-router-dom'
 import DeleteIcon from '@material-ui/icons/Delete';
 import MenuIcon from '@material-ui/icons/Menu';
 import AddIcon from '@material-ui/icons/Add';
+import ConnectionString from '../data/Connection'
 
 class DefinitionHelperPage extends Component{
 
@@ -17,9 +18,7 @@ class DefinitionHelperPage extends Component{
             adding: false,
             redirect: false,
             courses: [],
-            redirectTo: null,
-            URL: 'http://46.101.47.14:5000'
-            //URL: 'http://localhost:5000'
+            redirectTo: null
         }
 
         this.getCourses = this.getCourses.bind(this)
@@ -43,7 +42,7 @@ class DefinitionHelperPage extends Component{
 
     //#region API calls
     getCourses = async () => {
-        return fetch(this.state.URL + `/Courses`, {
+        return fetch(ConnectionString + `/Courses`, {
             headers: {
                 'content-type' : 'application/json',
                 'accept' : 'application/json'
@@ -56,7 +55,7 @@ class DefinitionHelperPage extends Component{
     async deleteCourse(event){
         let value = event.currentTarget.value
 
-        await fetch(this.state.URL + '/Course/' + value, {
+        await fetch(ConnectionString + '/Course/' + value, {
             method: 'DELETE',
             headers: {
                 'content-type' : 'application/json',

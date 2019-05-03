@@ -7,6 +7,7 @@ import AddIcon from '@material-ui/icons/Add';
 import BackIcon from '@material-ui/icons/ArrowBack';
 import SaveIcon from '@material-ui/icons/Save'
 import CancelIcon from '@material-ui/icons/Cancel'
+import ConnectionString from '../data/Connection'
 
 class DefinitionTable extends Component{
 
@@ -81,7 +82,7 @@ class DefinitionTable extends Component{
 
     getDefinitions = async (id) => {
         //const response = 
-        return fetch(`${this.state.URL}/definitions/${id}`, {
+        return fetch(`${ConnectionString}/definitions/${id}`, {
             headers: {
                 'content-type' : 'application/json',
                 'accept' : 'application/json'
@@ -92,7 +93,7 @@ class DefinitionTable extends Component{
     }
 
     postDefinition = async (definition) => {
-        fetch(`${this.state.URL}/definition`, {
+        fetch(`${ConnectionString}/definition`, {
             method: 'POST',
             headers: {
                 'content-type' : 'application/json'
@@ -109,7 +110,7 @@ class DefinitionTable extends Component{
     }
 
     deleteDefinition = async (id) => {
-        fetch(`${this.state.URL}/definition/${id}`, {
+        fetch(`${ConnectionString}/definition/${id}`, {
             method: 'DELETE',
             headers: {
                 'content-type' : 'application/json'

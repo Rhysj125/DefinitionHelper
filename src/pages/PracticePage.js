@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import Loading from '../components/utils/Loading'
 import QuestionCard from '../components/QuestionCard'
 import AnswerCards from '../components/AnswerCards'
+import ConnectionString from '../data/Connection'
 
 class PracticePage extends Component{
 
@@ -12,9 +13,7 @@ class PracticePage extends Component{
 
         this.state = {
             definitions: [],
-            courseID: null,
-            //URL: 'http://localhost:5000'
-            URL: 'http://46.101.47.14:5000'
+            courseID: null
         }
 
         this.getDefinitions = this.getDefinitions.bind(this)
@@ -54,7 +53,7 @@ class PracticePage extends Component{
 
     getDefinitions = async (id) => {
         //const response = 
-        return fetch(`${this.state.URL}/definitions/${id}`, {
+        return fetch(`${ConnectionString}/definitions/${id}`, {
             headers: {
                 'content-type' : 'application/json',
                 'accept' : 'application/json'
@@ -120,8 +119,6 @@ class PracticePage extends Component{
     // Returns the correct list of property of the answer object array depending on
     // which mode has been chosen by the user
     getAnswersBasedOnMode(answers){
-        console.log(answers)
-
         if(this.state.practiceMode == 'word'){
             return answers.map(currentAnswer => {
                 return  {
@@ -169,8 +166,6 @@ class PracticePage extends Component{
         let question = this.getRandomQuestion()
 
         let answers = question ? this.getRandomAnswers(question) : null
-
-        console.log(answers)
 
         return (
             <div>
