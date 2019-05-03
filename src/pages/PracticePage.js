@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import Loading from '../components/utils/Loading'
 import QuestionCard from '../components/QuestionCard'
 import AnswerCards from '../components/AnswerCards'
-import ConnectionString from '../data/Connection'
+import {getDefinition} from '../data-access/Definition'
 
 class PracticePage extends Component{
 
@@ -15,16 +15,13 @@ class PracticePage extends Component{
             definitions: [],
             courseID: null
         }
-
-        this.getDefinitions = this.getDefinitions.bind(this)
     }
 
     componentDidMount() {
 
         const params = new URLSearchParams(this.props.location.search)
         
-        const dbDefinitions = this.getDefinitions(params.get('id')).then(dbDefinitions => {
-
+        getDefinition(params.get('id')).then(dbDefinitions => {
             this.setState({
                 loading: true
             })
@@ -35,31 +32,13 @@ class PracticePage extends Component{
                     practiced: false
                 }
             })
-        })
-
-        dbDefinitions.then(results => {
+        }).then(results => {
             this.setState({
                 definitions: results,
                 courseID: params.get('id'),
                 practiceMode: params.get('mode'),
                 loading: false
             })
-        })
-    }
-
-    //#endregion
-
-    //#region API Calls
-
-    getDefinitions = async (id) => {
-        //const response = 
-        return fetch(`${ConnectionString}/definitions/${id}`, {
-            headers: {
-                'content-type' : 'application/json',
-                'accept' : 'application/json'
-            }
-        }).then(response => {
-            return response.json()
         })
     }
 
