@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import {Modal, Typography, TextField, Button} from '@material-ui/core'
 import { withStyles } from '@material-ui/core/styles';
 import ModalStyle from '../styles/modalStyle'
-import ConnectionString from '../data-access/Connection'
 import {postCourse} from '../data-access/Courses'
 
 const styles = theme => ({

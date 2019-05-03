@@ -5,7 +5,6 @@ import {Redirect} from 'react-router-dom'
 import DeleteIcon from '@material-ui/icons/Delete';
 import MenuIcon from '@material-ui/icons/Menu';
 import AddIcon from '@material-ui/icons/Add';
-import {ConnectionString} from '../data-access/Connection'
 import {getCourses, deleteCourse} from '../data-access/Courses'
 
 class DefinitionHelperPage extends Component{
