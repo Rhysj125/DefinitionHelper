@@ -5,6 +5,7 @@ function getModalStyle() {
     return {
       top: `${top}%`,
       left: `${left}%`,
+      width: '70%',
       transform: `translate(-${top}%, -${left}%)`,
     };
   }

@@ -69,7 +69,7 @@ class DefinitionHelperPage extends Component{
 
     getCourseFromState(id){
         let course = this.state.courses.find(course => {
-            return course._id == id
+            return course._id === id
         })
 
         return course
