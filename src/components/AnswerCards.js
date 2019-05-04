@@ -26,25 +26,45 @@ class AnswerCards extends Component{
         super(props)
 
         this.state = {
+            questionAnswered: false
+        }
+
+        this.toggleQuestionAnswered = this.toggleQuestionAnswered.bind(this)
+    }
+
+    componentWillReceiveProps(nextProps){
+        if (nextProps.answers !== this.props.answers){
+            this.setState({
+                questionAnswered: false
+            })
         }
     }
+
     //#endregion
 
     //#region Actions
 
     handleHover = (event) => {
-        event.currentTarget.style.backgroundColor = 'lightgrey'
+        if(!this.state.questionAnswered){
+            event.currentTarget.style.backgroundColor = 'lightgrey'
+        }
     }
 
     handleLeave = (event) => {
-        event.currentTarget.style.backgroundColor = 'white'
+        if(!this.state.questionAnswered){
+            event.currentTarget.style.backgroundColor = 'white'
+        }
     }
 
     handleClick = question => event => {
-        if(question.correct){
-            event.currentTarget.style.backgroundColor = 'green'
-        }else{
-            event.currentTarget.style.backgroundColor = 'red'
+        if(!this.state.questionAnswered){
+            if(question.correct){
+                event.currentTarget.style.backgroundColor = 'green'
+            }else{
+                event.currentTarget.style.backgroundColor = 'red'
+            }
+
+            this.toggleQuestionAnswered()
         }
     }
 
@@ -52,14 +72,22 @@ class AnswerCards extends Component{
 
     //#region toggles
 
+    toggleQuestionAnswered(){
+        this.setState({
+            questionAnswered: true
+        })
+
+        setTimeout(() => {
+            this.props.nextQuestion(this.props.currentQuestion)
+        }, 300)
+    }
+
     //#endregion
 
     //#region Render Methods
 
     render(){
         const { classes } = this.props;
-
-        console.log(this.props.answers)
 
         return this.props.answers.map(currentQuestion => {
             return (

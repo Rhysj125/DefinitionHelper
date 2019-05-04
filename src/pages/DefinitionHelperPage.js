@@ -5,6 +5,7 @@ import {Redirect} from 'react-router-dom'
 import DeleteIcon from '@material-ui/icons/Delete';
 import MenuIcon from '@material-ui/icons/Menu';
 import AddIcon from '@material-ui/icons/Add';
+import {getCourses, deleteCourse} from '../data-access/Courses'
 
 class DefinitionHelperPage extends Component{
 
@@ -17,59 +18,24 @@ class DefinitionHelperPage extends Component{
             adding: false,
             redirect: false,
             courses: [],
-            redirectTo: null,
-            URL: 'http://46.101.47.14:5000'
-            //URL: 'http://localhost:5000'
+            redirectTo: null
         }
 
-        this.getCourses = this.getCourses.bind(this)
         this.renderAdding = this.renderAdding.bind(this)
         this.toggleAdding = this.toggleAdding.bind(this)
-        this.deleteCourse = this.deleteCourse.bind(this)
+        this.handleDeleteClick = this.handleDeleteClick.bind(this)
         this.addCourse = this.addCourse.bind(this)
         this.getCourseFromState = this.getCourseFromState.bind(this)
         this.redirectOnClick = this.redirectOnClick.bind(this)
     }
 
     componentDidMount(){
-        this.getCourses().then((dbCourses) => {
+        getCourses().then((dbCourses) => {
             this.setState({
                 courses: dbCourses
             })
         })
-    }
-
-    //#endregion
-
-    //#region API calls
-    getCourses = async () => {
-        return fetch(this.state.URL + `/Courses`, {
-            headers: {
-                'content-type' : 'application/json',
-                'accept' : 'application/json'
-            }
-        }).then(response => {
-            return response.json()
-        })
-    }
-
-    async deleteCourse(event){
-        let value = event.currentTarget.value
-
-        await fetch(this.state.URL + '/Course/' + value, {
-            method: 'DELETE',
-            headers: {
-                'content-type' : 'application/json',
-                'accept' : 'application/json'
-            }
-        }).then(response => {
-            return response.json()
-        }).then(body => {
-            this.setState(prevState => ({
-                courses: prevState.courses.filter(currCourse => currCourse._id !== body._id)
-            }))
-        })
-    }
+    }   
 
     //#endregion
 
@@ -84,6 +50,16 @@ class DefinitionHelperPage extends Component{
     //#endregion
 
     //#region Actions
+
+    handleDeleteClick(event){
+        let value = event.currentTarget.value
+
+        deleteCourse(value).then(body => {
+            this.setState(prevState => ({
+                courses: prevState.courses.filter(currCourse => currCourse._id !== body._id)
+            }))
+        })
+    }
 
     addCourse(newCourse){
         this.setState( prevState => ({
@@ -141,7 +117,7 @@ class DefinitionHelperPage extends Component{
                                     <Button variant="contained" color="primary" style={{margin:'5px'}} value={course._id} onClick={this.redirectOnClick}>
                                         <MenuIcon />
                                     </Button>
-                                    <Button variant="contained" color="secondary" style={{margin:'5px'}} value={course._id} onClick={this.deleteCourse}>
+                                    <Button variant="contained" color="secondary" style={{margin:'5px'}} value={course._id} onClick={this.handleDeleteClick}>
                                         <DeleteIcon />
                                     </Button>
                                 </TableCell>

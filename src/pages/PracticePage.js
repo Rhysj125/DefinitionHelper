@@ -1,7 +1,9 @@
 import React, {Component} from 'react'
+import {Redirect} from 'react-router-dom'
 import Loading from '../components/utils/Loading'
 import QuestionCard from '../components/QuestionCard'
 import AnswerCards from '../components/AnswerCards'
+import {getDefinition} from '../data-access/Definition'
 
 class PracticePage extends Component{
 
@@ -13,19 +15,18 @@ class PracticePage extends Component{
         this.state = {
             definitions: [],
             courseID: null,
-            //URL: 'http://localhost:5000'
-            URL: 'http://46.101.47.14:5000'
+            complete: false
         }
 
-        this.getDefinitions = this.getDefinitions.bind(this)
+        this.markQuestionAsPracticed = this.markQuestionAsPracticed.bind(this)
+
     }
 
     componentDidMount() {
 
         const params = new URLSearchParams(this.props.location.search)
         
-        const dbDefinitions = this.getDefinitions(params.get('id')).then(dbDefinitions => {
-
+        getDefinition(params.get('id')).then(dbDefinitions => {
             this.setState({
                 loading: true
             })
@@ -36,31 +37,15 @@ class PracticePage extends Component{
                     practiced: false
                 }
             })
-        })
-
-        dbDefinitions.then(results => {
+        }).then(results => {
             this.setState({
                 definitions: results,
                 courseID: params.get('id'),
                 practiceMode: params.get('mode'),
                 loading: false
             })
-        })
-    }
-
-    //#endregion
-
-    //#region API Calls
-
-    getDefinitions = async (id) => {
-        //const response = 
-        return fetch(`${this.state.URL}/definitions/${id}`, {
-            headers: {
-                'content-type' : 'application/json',
-                'accept' : 'application/json'
-            }
-        }).then(response => {
-            return response.json()
+            
+            this.randomiseQuestionOrder()
         })
     }
 
@@ -69,14 +54,19 @@ class PracticePage extends Component{
     //#region Actions
 
     // Get a random question that has not yet been done this practice session
-    getRandomQuestion(){
-        let unpracticedQuestions = this.state.definitions.filter(currentDefinition => currentDefinition.practiced !== true)
-
-        let numberOfDefinitions = unpracticedQuestions.length - 1
-
-        let questionIndex = (Math.floor(Math.random() * (+numberOfDefinitions)))
-
-        return unpracticedQuestions[questionIndex]
+    randomiseQuestionOrder(){
+        this.setState(prevState => ({
+            definitions: prevState.definitions
+                .filter(currentDefinition => currentDefinition.practiced !== true)
+                .map(currentDefinition => {
+                    return {
+                        ...currentDefinition,
+                        order: (Math.floor(Math.random() * (+1000)))
+                    }
+                }).sort((a, b) => {
+                    return a.order - b.order
+                })
+        }))
     }
 
     // Get three random answers that does not match current answer.
@@ -120,8 +110,6 @@ class PracticePage extends Component{
     // Returns the correct list of property of the answer object array depending on
     // which mode has been chosen by the user
     getAnswersBasedOnMode(answers){
-        console.log(answers)
-
         if(this.state.practiceMode == 'word'){
             return answers.map(currentAnswer => {
                 return  {
@@ -141,8 +129,22 @@ class PracticePage extends Component{
         }
     }
 
-    getCorrectAnswer(){
+    markQuestionAsPracticed(currentQuestion){
+        let stateCopy = [].concat(this.state.definitions)
 
+        let currentQuestionIndex = this.getCurrentQuestionNumber()
+
+        if(currentQuestionIndex < stateCopy.length){
+            stateCopy[currentQuestionIndex - 1].practiced = true;
+        }else{
+            this.setState(prevState => ({
+                complete: !prevState.complete
+            }))
+        }
+
+        this.setState({
+            definitions: stateCopy
+        })
     }
 
     addCorrectAnswerAndSort(question, answers){
@@ -157,6 +159,10 @@ class PracticePage extends Component{
         })
     }
 
+    nextQuestion(){
+        return this.state.definitions[this.getCurrentQuestionNumber() - 1]
+    }
+
     //#endregion
 
     //#region Render Methods
@@ -165,21 +171,26 @@ class PracticePage extends Component{
         return <Loading />
     }
 
+    renderRedirectOnComplete(){
+        return (
+            <Redirect to='/Lilli' />
+        )
+    }
+
     render(){
-        let question = this.getRandomQuestion()
-
+        let question = this.nextQuestion()
+        
         let answers = question ? this.getRandomAnswers(question) : null
-
-        console.log(answers)
 
         return (
             <div>
                 <QuestionCard questionNumber={this.getCurrentQuestionNumber()} 
                     totalQuestions={this.state.definitions.length} question={this.getQuestionBasedOnMode(question)} />
                 
-                <AnswerCards answers={answers ? this.getAnswersBasedOnMode(answers) : []} />
+                <AnswerCards nextQuestion={this.markQuestionAsPracticed} currentQuestion={question} answers={answers ? this.getAnswersBasedOnMode(answers) : []} />
 
                 {this.state.loading ? this.renderLoading() : null}
+                {this.state.complete ? this.renderRedirectOnComplete() : null}
             </div>
         )
     }

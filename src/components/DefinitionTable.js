@@ -7,6 +7,7 @@ import AddIcon from '@material-ui/icons/Add';
 import BackIcon from '@material-ui/icons/ArrowBack';
 import SaveIcon from '@material-ui/icons/Save'
 import CancelIcon from '@material-ui/icons/Cancel'
+import {getDefinition, deleteDefinition, postDefinition} from '../data-access/Definition'
 
 class DefinitionTable extends Component{
 
@@ -23,13 +24,9 @@ class DefinitionTable extends Component{
             word: null,
             definition: null,
             courseID: null,
-            practice: false,
-            URL: 'http://46.101.47.14:5000'
-            //URL: 'http://localhost:5000'
+            practice: false
         }
 
-        this.getDefinitions = this.getDefinitions.bind(this)
-        this.deleteDefinition = this.deleteDefinition.bind(this)
         this.toggleAdding = this.toggleAdding.bind(this)
         this.toggleRedirect = this.toggleRedirect.bind(this)
         this.togglePractice = this.togglePractice.bind(this)
@@ -42,7 +39,7 @@ class DefinitionTable extends Component{
     componentDidMount(){
         const params = new URLSearchParams(this.props.location.search)
 
-        this.getDefinitions(params.get('id')).then(dbDefinitions => {
+        getDefinition(params.get('id')).then(dbDefinitions => {
             this.setState({
                 definitions: dbDefinitions,
                 courseID: params.get('id')
@@ -77,56 +74,6 @@ class DefinitionTable extends Component{
 
     //#endregion
 
-    //#region API Calls
-
-    getDefinitions = async (id) => {
-        //const response = 
-        return fetch(`${this.state.URL}/definitions/${id}`, {
-            headers: {
-                'content-type' : 'application/json',
-                'accept' : 'application/json'
-            }
-        }).then(response => {
-            return response.json()
-        })
-    }
-
-    postDefinition = async (definition) => {
-        fetch(`${this.state.URL}/definition`, {
-            method: 'POST',
-            headers: {
-                'content-type' : 'application/json'
-            },
-            body: JSON.stringify(definition)
-        }).then(response => {
-            return response.json()
-        }).then(definition =>{         
-            this.setState(prevState => ({
-                definitions: [...prevState.definitions, definition],
-                adding: !prevState
-            }))
-        })
-    }
-
-    deleteDefinition = async (id) => {
-        fetch(`${this.state.URL}/definition/${id}`, {
-            method: 'DELETE',
-            headers: {
-                'content-type' : 'application/json'
-            }
-        }).then(response => {
-            return response.json()
-        }).then(definition => {
-            console.log(definition)
-
-            this.setState(prevState => ({
-                definitions: prevState.definitions.filter(curDefinition => curDefinition._id !== definition._id)
-            }))
-        })
-    }
-    
-    //#endregion
-
     //#region Actions
 
     handleTextChange = name => event =>{
@@ -144,13 +91,24 @@ class DefinitionTable extends Component{
 
         console.log(JSON.stringify(definition))
 
-        this.postDefinition(definition)
+        postDefinition(definition).then(definition =>{         
+            this.setState(prevState => ({
+                definitions: [...prevState.definitions, definition],
+                adding: !prevState
+            }))
+        })
     }
 
     deleteClick(event){
         const id = event.currentTarget.value
 
-        this.deleteDefinition(id)
+        deleteDefinition(id).then(definition => {
+            console.log(definition)
+
+            this.setState(prevState => ({
+                definitions: prevState.definitions.filter(curDefinition => curDefinition._id !== definition._id)
+            }))
+        })
     }
 
     //#endregion
