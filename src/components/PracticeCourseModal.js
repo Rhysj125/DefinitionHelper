@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import {Modal, Typography, TextField, Button} from '@material-ui/core'
+import {Modal, Typography, Button} from '@material-ui/core'
 import { withStyles } from '@material-ui/core/styles';
 import ModalStyle from '../styles/modalStyle'
 import {Redirect} from 'react-router-dom'
