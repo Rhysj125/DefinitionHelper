@@ -147,40 +147,42 @@ class DefinitionTable extends Component{
                     practice
                 </Button>
 
-                <Table >
-                    <TableHead>
-                        <TableRow>
-                            <TableCell>Word</TableCell>
-                            <TableCell>Definition</TableCell>
-                            <TableCell className='td-action'>Action</TableCell>
-                        </TableRow>
-                    </TableHead>
-                </Table>
-                <div className='table-definition'>
-                <Table >
-                    <TableBody>
-                        {
-                            this.state.definitions.map((definition) => {                        
-                                return (
-                                    <TableRow>
-                                        <TableCell className='td-word'>
-                                            {definition.word}
-                                        </TableCell>
-                                        <TableCell className='td-definition'>
-                                            {definition.definition}
-                                        </TableCell>
-                                        <TableCell className='td-action'>
-                                            <Button variant="contained" color="secondary" style={{margin:'5px'}} value={definition._id} onClick={this.deleteClick}>
-                                                <DeleteIcon/>
-                                            </Button>
-                                        </TableCell>
-                                    </TableRow>
-                                    )
-                                })
-                        }
-                        {this.state.adding ? this.renderAdding() : null}
-                    </TableBody>
-                </Table>
+                <div className="tablePractice">
+                    <Table>
+                        <TableHead>
+                            <TableRow>
+                                <TableCell>Word</TableCell>
+                                <TableCell>Definition</TableCell>
+                                <TableCell className='td-action'>Action</TableCell>
+                            </TableRow>
+                        </TableHead>
+                    </Table>
+                    <div className='table-definition'>
+                    <Table >
+                        <TableBody>
+                            {
+                                this.state.definitions.map((definition) => {                        
+                                    return (
+                                        <TableRow>
+                                            <TableCell className='td-word'>
+                                                {definition.word}
+                                            </TableCell>
+                                            <TableCell className='td-definition'>
+                                                {definition.definition}
+                                            </TableCell>
+                                            <TableCell className='td-action'>
+                                                <Button variant="contained" color="secondary" style={{margin:'5px'}} value={definition._id} onClick={this.deleteClick}>
+                                                    <DeleteIcon/>
+                                                </Button>
+                                            </TableCell>
+                                        </TableRow>
+                                        )
+                                    })
+                            }
+                            {this.state.adding ? this.renderAdding() : null}
+                        </TableBody>
+                    </Table>
+                    </div>
                 </div>
 
                 <Button variant='contained' color='default' value='Lilli' style={{margin:'5px'}} onClick={this.toggleRedirect}>

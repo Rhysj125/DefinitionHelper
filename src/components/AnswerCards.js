@@ -61,7 +61,7 @@ class AnswerCards extends Component{
                 event.currentTarget.style.backgroundColor = 'red'
             }
 
-            this.toggleQuestionAnswered()
+            this.toggleQuestionAnswered(event.currentTarget)
         }
     }
 
@@ -69,14 +69,15 @@ class AnswerCards extends Component{
 
     //#region toggles
 
-    toggleQuestionAnswered(){
+    toggleQuestionAnswered(eventTarget){
         this.setState({
             questionAnswered: true
         })
 
         setTimeout(() => {
             this.props.nextQuestion(this.props.currentQuestion)
-        }, 300)
+            eventTarget.style.backgroundColor = 'white'
+        }, 2000)
     }
 
     //#endregion
@@ -88,7 +89,7 @@ class AnswerCards extends Component{
 
         return this.props.answers.map(currentQuestion => {
             return (
-                <Card className={classes.card} onMouseEnter={this.handleHover} onMouseLeave={this.handleLeave} onClick={this.handleClick(currentQuestion)}>
+                <Card style={{marginTop: '5px'}} className={classes.card} onMouseEnter={this.handleHover} onMouseLeave={this.handleLeave} onClick={this.handleClick(currentQuestion)}>
                     <CardContent>
                         <Typography variant="h5" component="h2">
                             {currentQuestion.answer}
