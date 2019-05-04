@@ -1,10 +1,7 @@
 import React, {Component} from 'react'
-import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
-import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 
 const styles = {
@@ -64,7 +61,7 @@ class AnswerCards extends Component{
                 event.currentTarget.style.backgroundColor = 'red'
             }
 
-            this.toggleQuestionAnswered()
+            this.toggleQuestionAnswered(event.currentTarget)
         }
     }
 
@@ -72,14 +69,15 @@ class AnswerCards extends Component{
 
     //#region toggles
 
-    toggleQuestionAnswered(){
+    toggleQuestionAnswered(eventTarget){
         this.setState({
             questionAnswered: true
         })
 
         setTimeout(() => {
             this.props.nextQuestion(this.props.currentQuestion)
-        }, 300)
+            eventTarget.style.backgroundColor = 'white'
+        }, 2000)
     }
 
     //#endregion
@@ -91,7 +89,7 @@ class AnswerCards extends Component{
 
         return this.props.answers.map(currentQuestion => {
             return (
-                <Card className={classes.card} onMouseEnter={this.handleHover} onMouseLeave={this.handleLeave} onClick={this.handleClick(currentQuestion)}>
+                <Card style={{marginTop: '5px'}} className={classes.card} onMouseEnter={this.handleHover} onMouseLeave={this.handleLeave} onClick={this.handleClick(currentQuestion)}>
                     <CardContent>
                         <Typography variant="h5" component="h2">
                             {currentQuestion.answer}
@@ -100,8 +98,6 @@ class AnswerCards extends Component{
                 </Card>
             )
         })
-
-        return null
     }
 
     //#endregion

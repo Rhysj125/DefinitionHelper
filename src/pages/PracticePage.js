@@ -98,9 +98,9 @@ class PracticePage extends Component{
     // Returns the correct property of the question object depending on
     // which mode has been chosen by the user
     getQuestionBasedOnMode(question){
-        if(this.state.practiceMode == 'word'){
+        if(this.state.practiceMode === 'word'){
             return question.word
-        }else if(this.state.practiceMode == 'definition'){
+        }else if(this.state.practiceMode === 'definition'){
             return question.definition
         }else{
             return 'Something went Wrong'
@@ -110,14 +110,14 @@ class PracticePage extends Component{
     // Returns the correct list of property of the answer object array depending on
     // which mode has been chosen by the user
     getAnswersBasedOnMode(answers){
-        if(this.state.practiceMode == 'word'){
+        if(this.state.practiceMode === 'word'){
             return answers.map(currentAnswer => {
                 return  {
                     answer : currentAnswer.definition,
                     correct: currentAnswer.correctAnswer
                 }
             })
-        }else if(this.state.practiceMode == 'definition'){
+        }else if(this.state.practiceMode === 'definition'){
             return answers.map(currentAnswer => {
                 return {
                     answer : currentAnswer.word,

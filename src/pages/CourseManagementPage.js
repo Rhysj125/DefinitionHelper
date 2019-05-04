@@ -5,10 +5,6 @@ class CourseManagementPage extends Component{
 
     //#region init
 
-    constructor(props){
-        super(props)
-    }
-
     //#region Render Methods
     
     render(){
